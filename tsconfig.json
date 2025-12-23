@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "allowJs": false,
-    "outDir": ".",
+    "outDir": "./bin",
     "baseUrl": "./",
     "forceConsistentCasingInFileNames": true,
     "target": "ESNext",
