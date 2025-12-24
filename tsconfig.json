@@ -33,7 +33,5 @@
       "war3-transformer/types",
       "war3-objectdata-th/dist/cjs/objectdata"
     ]
-  },
-  "include": ["src"],
-  "exclude": []
+  }
 }
