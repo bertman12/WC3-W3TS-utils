@@ -1,11 +1,15 @@
 {
   "name": "warcraft-3-w3ts-utils",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A library of utility functions for modding Warcraft 3 utilizing the W3TS template.",
   "main": "index.js",
   "scripts": {
     "test": "npm run test"
   },
+  "files": [
+    "dist",
+    "tsconfig.json"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bertman12/WC3-W3TS-utils.git"
