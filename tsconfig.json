@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "strict": true,
+    "declaration": true,
+    "inlineSourceMap": true,
     "allowJs": false,
-    "outDir": "./bin",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "baseUrl": "./",
     "forceConsistentCasingInFileNames": true,
-    "target": "ESNext",
+    "target": "esnext",
+    "module": "commonjs",
     "lib": ["ESNext"],
     "moduleResolution": "node",
     "paths": {
