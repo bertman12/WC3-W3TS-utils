@@ -15,7 +15,6 @@
     "module": "commonjs",
     "lib": ["ESNext"],
     "moduleResolution": "node10",
-
     "paths": {
       "@objectdata/*": [
         "./node_modules/war3-objectdata-th/dist/cjs/generated/constants/*"
