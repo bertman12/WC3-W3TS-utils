@@ -18,7 +18,7 @@ export function unitHasItem(u: Unit, itemTypeId: number): boolean {
 }
 
 // Player should pick up recipes when needed. if they are missing items then the recipe cost is refunded
-export function trig_itemRecipeSystem() {
+function trig_itemRecipeSystem() {
     //takes a set of items
     //unit or unit clicks
     const t = Trigger.create();
@@ -133,6 +133,14 @@ function checkItemRecipeRequirements(unit: Unit, recipeItem: Item) {
     }
 }
 
+/***
+ * Determines items that are created by recipes.
+ */
+export function registerItemsRecipes(recipesConfiguration: Map<RecipeItem, RecipeItemRequirement[]>) {
+    itemRecipesMap = recipesConfiguration;
+    trig_itemRecipeSystem();
+}
+
 interface RecipeItemRequirement {
     itemTypeId: number; //ITEMS;
     quantity: number;
@@ -144,7 +152,7 @@ interface RecipeItem {
     itemId: number;
 }
 
-const itemRecipesMap = new Map<RecipeItem, RecipeItemRequirement[]>([
+let itemRecipesMap = new Map<RecipeItem, RecipeItemRequirement[]>([
     // [
     //     { recipeId: ITEMS.recipe_blinkTreads, itemId: ITEMS.blinkTreads },
     //     [

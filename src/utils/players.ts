@@ -63,7 +63,6 @@ export function forEachUnitTypeOfPlayer(unitType: number | string, player: MapPl
 }
 
 /**
- * Doesn;'t appear to actually work?
  * @broken
  * @param unitName
  * @param unitType

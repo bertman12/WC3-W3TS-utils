@@ -1,6 +1,5 @@
 import { Timer, Trigger, Unit } from "w3ts";
 
-
 /**
  * Good for once a unit gets near you, but not good while they are near you since the event is only triggered on entry, not during
  * @param unit
@@ -51,9 +50,7 @@ export function unitGetsNearThisUnit(
       config?.onDestroy(effectedUnitPool);
     }
 
-    // print("destroying the trigger!");
     trig.destroy();
-    // print("The trigger ref: ", trig);
   };
 
   const clearUniqueUnits = () => {
