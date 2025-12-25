@@ -7,10 +7,8 @@
     "Warcraft 3"
   ],
   "scripts": {
-    "generate": "ts-node src",
     "compile": "tsc",
-    "build": "npm run generate && npm run compile",
-    "prepublishOnly": "npm run build",
+    "build": "npm run compile",
     "prepare": "npm run build"
   },
   "files": [
