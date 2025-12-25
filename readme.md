@@ -28,13 +28,7 @@ Or add the files directly to your W3TS project (recommended for custom Warcraft 
 Import only what you need:
 
 ```ts
-import { clamp, deepClone, createTimer } from 'wc3-w3ts-utils';
-
-// clamp example
-const v = clamp(10, 0, 5); // 5
-
-// deep clone example
-const copy = deepClone(original);
+import { createTimer } from 'wc3-w3ts-utils';
 
 // timer example
 const t = createTimer(() => {

@@ -1,39 +1,47 @@
 {
-  "include": ["src/**/*.ts", "src/**/*.js"],
-  "exclude": ["node_modules/**"],
-  "compilerOptions": {
-    "incremental": true,
-    "strict": true,
-    "declaration": true,
-    "inlineSourceMap": true,
-    "allowJs": false,
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "forceConsistentCasingInFileNames": true,
-    "target": "esnext",
-    "module": "commonjs",
-    "lib": ["ESNext"],
-    "moduleResolution": "node10",
-    "paths": {
-      "@objectdata/*": [
-        "./node_modules/war3-objectdata-th/dist/cjs/generated/constants/*"
-      ]
+    "include": ["src/**/*.ts", "src/**/*.js"],
+    "exclude": ["node_modules/**"],
+    "compilerOptions": {
+        "incremental": true,
+        "strict": true,
+        "declaration": true,
+        "inlineSourceMap": true,
+        "allowJs": false,
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "forceConsistentCasingInFileNames": true,
+        "target": "esnext",
+        "module": "commonjs",
+        "lib": ["ESNext"],
+        "moduleResolution": "node10",
+        "paths": {
+            "@objectdata/*": ["./node_modules/war3-objectdata-th/dist/cjs/generated/constants/*"]
+        },
+        "types": [
+            "@typescript-to-lua/language-extensions",
+            "lua-types/core/coroutine",
+            "lua-types/core/global",
+            "lua-types/core/math",
+            "lua-types/core/metatable",
+            "lua-types/core/modules",
+            "lua-types/core/string",
+            "lua-types/core/table",
+            "lua-types/core/os",
+            "lua-types/special/5.3",
+            "war3-types-strict/1.33.0",
+            "war3-transformer/types",
+            "war3-objectdata-th/dist/cjs/objectdata"
+        ]
     },
-    "types": [
-      "@typescript-to-lua/language-extensions",
-      "lua-types/core/coroutine",
-      "lua-types/core/global",
-      "lua-types/core/math",
-      "lua-types/core/metatable",
-      "lua-types/core/modules",
-      "lua-types/core/string",
-      "lua-types/core/table",
-      "lua-types/core/os",
-      "lua-types/special/5.3",
-      "war3-types-strict/1.33.0",
-      "war3-transformer/types",
-      "war3-objectdata-th/dist/cjs/objectdata"
-    ]
-  }
+    "tstl": {
+        "luaTarget": "5.3",
+        "noHeader": true,
+        "luaLibImport": "require",
+        "noImplicitSelf": true,
+        "luaBundle": "dist/tstl_output.lua",
+        "luaBundleEntry": "./src/main.ts",
+        "sourceMapTraceback": false,
+        "noResolvePaths": ["typescript", "typescript-to-lua"]
+    }
 }
