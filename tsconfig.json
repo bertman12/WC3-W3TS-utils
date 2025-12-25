@@ -40,7 +40,7 @@
         "luaLibImport": "require",
         "noImplicitSelf": true,
         "luaBundle": "dist/tstl_output.lua",
-        "luaBundleEntry": "./src/main.ts",
+        "luaBundleEntry": "./src/index.ts",
         "sourceMapTraceback": false,
         "noResolvePaths": ["typescript", "typescript-to-lua"]
     }
