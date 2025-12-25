@@ -141,13 +141,13 @@ export function registerItemsRecipes(recipesConfiguration: Map<RecipeItem, Recip
     trig_itemRecipeSystem();
 }
 
-interface RecipeItemRequirement {
+export interface RecipeItemRequirement {
     itemTypeId: number; //ITEMS;
     quantity: number;
     charges: number;
 }
 
-interface RecipeItem {
+export interface RecipeItem {
     recipeId: number;
     itemId: number;
 }
