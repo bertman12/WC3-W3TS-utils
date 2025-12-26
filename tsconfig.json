@@ -1,6 +1,7 @@
 {
     "include": ["src/**/*.ts", "src/**/*.js"],
     "exclude": ["node_modules/**"],
+    "$schema": "https://raw.githubusercontent.com/TypeScriptToLua/TypeScriptToLua/master/tsconfig-schema.json",
     "compilerOptions": {
         "incremental": true,
         "strict": true,
@@ -33,6 +34,12 @@
             "war3-types-strict/1.33.0",
             "war3-transformer/types",
             "war3-objectdata-th/dist/cjs/objectdata"
-        ]
+        ],
+        "tstl": {
+            "buildMode": "library",
+            "luaTarget": "5.3",
+            "noHeader": true,
+            "sourceMapTraceback": false
+        }
     }
 }
