@@ -34,15 +34,5 @@
             "war3-transformer/types",
             "war3-objectdata-th/dist/cjs/objectdata"
         ]
-    },
-    "tstl": {
-        "luaTarget": "5.3",
-        "noHeader": true,
-        "luaLibImport": "require",
-        "noImplicitSelf": true,
-        "luaBundle": "dist/tstl_output.lua",
-        "luaBundleEntry": "./src/index.ts",
-        "sourceMapTraceback": false,
-        "noResolvePaths": ["typescript", "typescript-to-lua"]
     }
 }

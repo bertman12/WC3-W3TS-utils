@@ -11,8 +11,7 @@
         "prepare": "npm run build && cp package.json ./dist/"
     },
     "files": [
-        "dist",
-        "src"
+        "dist"
     ],
     "repository": {
         "type": "git",
