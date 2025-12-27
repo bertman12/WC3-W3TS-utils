@@ -8,7 +8,7 @@
     ],
     "scripts": {
         "build": "tstl -p tsconfig.json",
-        "prepare": "npm run build && cp package.json ./dist/"
+        "prepare": "npm run build"
     },
     "files": [
         "dist"
