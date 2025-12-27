@@ -18,8 +18,9 @@
         "url": "git+https://github.com/bertman12/WC3-W3TS-utils.git"
     },
     "exports": {
-        "./dist": "./dist/index.lua"
+        ".": "./dist/index.lua"
     },
+    "types": "./dist/index.d.ts",
     "author": "bertman12",
     "license": "MIT",
     "bugs": {
