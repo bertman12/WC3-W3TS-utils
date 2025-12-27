@@ -39,6 +39,7 @@
         "buildMode": "library",
         "luaTarget": "5.3",
         "noHeader": true,
-        "sourceMapTraceback": false
+        "sourceMapTraceback": false,
+        "tstlVerbose": true
     }
 }
