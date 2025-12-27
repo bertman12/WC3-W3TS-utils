@@ -1,6 +1,6 @@
 {
     "name": "warcraft-3-w3ts-utils",
-    "version": "0.1.26",
+    "version": "0.1.25",
     "description": "A library of utility functions for modding Warcraft 3 utilizing the W3TS template.",
     "main": "./dist/index.lua",
     "keywords": [
@@ -16,6 +16,9 @@
     "repository": {
         "type": "git",
         "url": "git+https://github.com/bertman12/WC3-W3TS-utils.git"
+    },
+    "exports": {
+        "./dist": "./dist/index.lua"
     },
     "author": "bertman12",
     "license": "MIT",
