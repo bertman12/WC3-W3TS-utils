@@ -13,7 +13,6 @@
         "baseUrl": "./",
         "forceConsistentCasingInFileNames": true,
         "target": "esnext",
-        "module": "nodenext",
         "lib": ["ESNext"],
         "moduleResolution": "node",
         "paths": {
