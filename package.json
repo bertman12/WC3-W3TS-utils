@@ -1,6 +1,6 @@
 {
     "name": "warcraft-3-w3ts-utils",
-    "version": "0.1.29",
+    "version": "0.1.30",
     "description": "A library of utility functions for modding Warcraft 3 utilizing the W3TS template.",
     "main": "./src/index.ts",
     "keywords": [
