@@ -15,7 +15,7 @@
         "target": "esnext",
         "module": "nodenext",
         "lib": ["ESNext"],
-        "moduleResolution": "nodenext",
+        "moduleResolution": "node",
         "paths": {
             "@objectdata/*": ["./node_modules/war3-objectdata-th/dist/cjs/generated/constants/*"]
         },
