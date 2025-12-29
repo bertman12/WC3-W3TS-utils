@@ -14,7 +14,8 @@
     },
     "files": [
         "./**/*.lua",
-        "./**/*.d.ts"
+        "./**/*.d.ts",
+        "src"
     ],
     "repository": {
         "type": "git",
