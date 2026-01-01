@@ -6,6 +6,7 @@
         "incremental": true,
         "strict": true,
         "declaration": true,
+        "declarationMap": true,
         "inlineSourceMap": true,
         "allowJs": false,
         "rootDir": "./src",
