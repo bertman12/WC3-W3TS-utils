@@ -34,33 +34,36 @@ Or add the files directly to your W3TS project (recommended for custom Warcraft 
 Import only what you need:
 
 ```ts
-import { createTimer } from "wc3-w3ts-utils";
+import { delayedTimer, unitsInRange, applyForce, useTempEffect } from "wc3-w3ts-utils";
 
-// timer example
-const t = createTimer(
-    () => {
-        // do something each tick
-    },
-    1.0,
-    true
-);
+function Rebuke() {
+    //Blasts unit's near the archmage away, temporarily slowing them
+    const t = Trigger.create();
+    t.registerUnitEvent(this.hero, EVENT_UNIT_SPELL_EFFECT);
+    triggerAction(t, ({ spellId, refId }) => {
+        if (spellId !== WTS_Abilities.Rebuke) {
+            return;
+        }
+
+        delayedTimer(0.5, () => {
+            unitsInRange(this.hero.x, this.hero.y, 350, (unit) => {
+                if (unit.isAlive() && unit.isEnemy(this.hero.owner)) {
+                    //apply force
+                    const forceAngle = getRelativeAngleToUnit(this.hero, unit);
+                    applyForce(forceAngle, unit, 1800, { obeyPathing: true });
+                    applyStun(1, { contextId: refId, effectId: "archmage-rebuke", unit: unit });
+                    this.hero.damageTarget(unit.handle, 100, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_UNIVERSAL, WEAPON_TYPE_ROCK_HEAVY_BASH);
+                }
+            });
+        });
+
+        const effect = Effect.createAttachment("Units\\NightElf\\Wisp\\WispExplode.mdl", this.hero, "overhead");
+        effect?.playWithTimeScale(ANIM_TYPE_BIRTH, 2);
+
+        useTempEffect(effect);
+    });
+}
 ```
-
-If copied directly into a W3TS project, adjust import paths accordingly:
-
-```ts
-import { clamp } from "./utils/math";
-```
-
-## API (examples)
-
--   clamp(value: number, min: number, max: number): number
--   deepClone<T>(obj: T): T
--   merge<T>(target: T, source: Partial<T>): T
--   createTimer(callback: () => void, period: number, repeating?: boolean)
--   safeCall<T>(fn: () => T, fallback?: T): T
-
-(See source files for full signatures and docs.)
 
 ## Contributing
 
@@ -74,4 +77,4 @@ MIT — see LICENSE file.
 
 ## Notes
 
-Built to be simple and compatible with W3TS v3.x and Warcraft III modding workflows. Adjust imports when integrating directly into your map project.
+Built to be simple and compatible with W3TS v3.x and Warcraft III modding workflows. Adjust imports when integrating directly into your map project. This library was created for learning purposes and for personal utility of having a centralized location for my utility functions. There is still work to be done for organization and arguments once I get around to it.
