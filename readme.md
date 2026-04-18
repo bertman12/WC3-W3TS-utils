@@ -34,7 +34,7 @@ Or add the files directly to your W3TS project (recommended for custom Warcraft 
 Import only what you need:
 
 ```ts
-import { delayedTimer, unitsInRange, applyForce, useTempEffect } from "wc3-w3ts-utils";
+import { delayedTimer, unitsInRange, applyForce, useTempEffect, getRelativeAngleToUnit } from "wc3-w3ts-utils";
 
 function Rebuke() {
     //Blasts unit's near the archmage away, temporarily slowing them

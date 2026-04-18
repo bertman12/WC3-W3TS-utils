@@ -104,8 +104,6 @@ export function applyForce(
     );
   }
 
-  // unit.issueImmediateOrder(OrderId.Stop);
-
   if (config?.animationIndexNumber) {
     ResetUnitAnimation(unit.handle);
     SetUnitAnimationByIndex(unit.handle, config.animationIndexNumber);
@@ -133,7 +131,6 @@ export function applyForce(
     //     unit.issueImmediateOrder(OrderId.Stop);
     // }
 
-    //should probably only do strict pathing so nothing else interfers with the unit moving
     if (forceDummyUnit && config?.strictPathing) {
       const isWindWalked = UnitHasBuffBJ(forceDummyUnit.handle, FourCC("BOwk"));
 
@@ -215,6 +212,9 @@ export function applyForce(
 }
 
 /**
+ * Should remove probably
+ * 
+ * 
  * @param angle degrees
  * @param effect
  * @param initialSpeed meters per second

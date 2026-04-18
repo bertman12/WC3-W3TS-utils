@@ -43,6 +43,13 @@ export function getRandomCoordinatesInCircularArea(relativeX: number, relativeY:
     };
 }
 
+/**
+ * Returns a random x and y along the circle's circumference.
+ * @param relativeX 
+ * @param relativeY 
+ * @param radius 
+ * @returns 
+ */
 export function getRandomCoordinatesOnCircle(relativeX: number, relativeY: number, radius: number) {
     const randomTheta = Math.random() * 360;
 

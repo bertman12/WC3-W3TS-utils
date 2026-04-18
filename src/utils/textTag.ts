@@ -1,6 +1,13 @@
 import { TextTag, Trigger, Unit } from "w3ts";
 import { ptColor } from "./misc";
-import { delayedTimer } from "./timer";
+import { delay } from "./timer";
+
+interface TextTagConfig {
+    duration?: number;
+    yVelocity?: number;
+    xVelocity?: number;
+    useFade?: boolean;
+}
 
 /**
  * https://www.hiveworkshop.com/threads/floating-text.149719/
@@ -22,7 +29,7 @@ endfunction
  * @param text 
  * @param duration 
  */
-export function createFloatingTextTagOnUnit(unit: Unit, text: string, config?: { duration?: number; yVelocity?: number; xVelocity?: number; useFade?: boolean }) {
+export function createFloatingTextTagOnUnit(unit: Unit, text: string, config?: TextTagConfig) {
     const tag = TextTag.create();
     tag?.setVisible(true);
 
@@ -40,15 +47,19 @@ export function createFloatingTextTagOnUnit(unit: Unit, text: string, config?: {
     tag?.setPosUnit(unit, 10);
 
     if (config && config.duration && config.duration === 0) {
-        return;
+        return tag;
     }
 
-    delayedTimer(config?.duration ?? 2, () => {
-        tag?.destroy();
-    });
+    if (config?.duration && config.duration !== 0) {
+        delay(config?.duration ?? 2, () => {
+            tag?.destroy();
+        });
+    }
+
+    return tag;
 }
 
-export function createPermanentTextTagOnPoint(text: string, x: number, y: number) {
+export function createPermanentTextTagOnPoint(text: string, x: number, y: number, config: TextTagConfig) {
     const tag = TextTag.create();
     tag?.setVisible(true);
 
@@ -58,8 +69,14 @@ export function createPermanentTextTagOnPoint(text: string, x: number, y: number
     tag?.setVelocity(0, 0);
     tag?.setPermanent(true);
     tag?.setPos(x, y, 20);
+
+    return tag;
 }
 
+/**
+ * Probably doesn't belong
+ * Creates a text tag on units when a spell is cast.
+ */
 export function setup_createTextForSpellCast() {
     const t = Trigger.create();
 

@@ -32,6 +32,7 @@ const properColorHexes = new Map<ProperColors, string>([
     ["player5-yellow", "fffc00"],
     ["player6-orange", "fe8a0e"],
 ]);
+
 // enum PlayerColors {
 //     Player1 = "ff0303", // Red
 //     Player2 = "0042ff", // Blue
@@ -123,10 +124,6 @@ export function notifyPlayer(msg: string) {
     print(`${tColor("!", "goldenrod")} - ${msg}`);
 }
 
-export function displayError(msg: string) {
-    print(`[ ${tColor("WARNING", "red")} ]: ${msg}`);
-}
-
 /**
  * Returns degrees or radians?
  */
@@ -167,6 +164,11 @@ export function useEffects() {
     };
 }
 
+/**
+ * Destroys an effect after a delay.
+ * @param effect
+ * @param duration 1.5 seconds
+ */
 export function useTempEffect(effect: Effect | undefined, duration: number = 1.5) {
     if (effect) {
         const timer = Timer.create();

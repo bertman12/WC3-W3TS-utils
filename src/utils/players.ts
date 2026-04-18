@@ -22,6 +22,7 @@ export function forEachUnitOfPlayerWithAbility(player: MapPlayer, abilityId: num
 /**
  * Calls a function for each player playing and is an ally of red.
  * @warning specific to map
+ * @deprecated
  */
 export function forEachAlliedPlayer(cb: (player: MapPlayer, index: number) => void) {
     Players.forEach((player, index) => {
@@ -197,7 +198,7 @@ export function playerHasResources(player: MapPlayer, data: { gold?: number; lum
     return hasGold && hasLumber;
 }
 
-export function setPlayerName() {
+export function trigger_setPlayerName() {
     const t = Trigger.create();
     forEachPlayer((p) => {
         t.registerPlayerChatEvent(p, "-playername ", false);
