@@ -1,6 +1,7 @@
 # WC3-W3TS-utils
 
-This library was created for learning purposes and for personal utility of having a centralized location for my utility functions. There is still work to be done for organization and arguments once I get around to it.
+#### This library was created for learning purposes and for personal utility of having a centralized location for my utility functions. There is still plenty work to be done for organization and arguments once I get around to it.
+
 Small collection of utility helpers for projects using W3TS (Warcraft III TypeScript, v3.x). Designed to be lightweight and easy to drop into your WC3 TypeScript projects to simplify common tasks (tables, math, cloning, timers, safe wrappers, etc.).
 
 ## Features
