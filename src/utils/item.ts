@@ -73,7 +73,7 @@ function checkItemRecipeRequirements(unit: Unit, recipeItem: Item) {
                 const alreadyStoredItemIndex = matchingItems.findIndex((itemReq) => itemReq.itemTypeId === currItem.typeId);
 
                 //If we already came across this item in the unit inventory then increment the quantity
-                if (alreadyStoredItemIndex && matchingItems[alreadyStoredItemIndex]) {
+                if (alreadyStoredItemIndex !== undefined && matchingItems[alreadyStoredItemIndex]) {
                     matchingItems[alreadyStoredItemIndex].quantity++;
                 }
                 //otherwise it is our first match with this item type, so add it to our array of matching items

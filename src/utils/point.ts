@@ -20,7 +20,7 @@ export function createValidPoint(maxAttempts: number, validatorFn: (p: Point) =>
 
         const isValidPoint = validatorFn(p);
 
-        if (isValidPoint) {
+        if (isValidPoint !== undefined) {
             // pointsChosen.push(p);
             return p;
         } else {
@@ -45,10 +45,10 @@ export function getRandomCoordinatesInCircularArea(relativeX: number, relativeY:
 
 /**
  * Returns a random x and y along the circle's circumference.
- * @param relativeX 
- * @param relativeY 
- * @param radius 
- * @returns 
+ * @param relativeX
+ * @param relativeY
+ * @param radius
+ * @returns
  */
 export function getRandomCoordinatesOnCircle(relativeX: number, relativeY: number, radius: number) {
     const randomTheta = Math.random() * 360;

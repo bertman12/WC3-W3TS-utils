@@ -1,4 +1,4 @@
-import { Effect, MapPlayer, Timer, Unit } from "w3ts";
+import { Effect, MapPlayer, Timer } from "w3ts";
 
 type ProperColors = "goldenrod" | "magenta" | "green" | "yellow" | "red" | "player1-red" | "player2-blue" | "player3-teal" | "player4-purple" | "player5-yellow" | "player6-orange";
 
@@ -122,20 +122,6 @@ const playerColors = [
  */
 export function notifyPlayer(msg: string) {
     print(`${tColor("!", "goldenrod")} - ${msg}`);
-}
-
-/**
- * Returns degrees or radians?
- */
-export function getRelativeAngleToUnit(unit: Unit, relativeUnit: Unit) {
-    const locA = GetUnitLoc(unit.handle);
-    const locB = GetUnitLoc(relativeUnit.handle);
-    const angle = AngleBetweenPoints(locA, locB);
-
-    RemoveLocation(locA);
-    RemoveLocation(locB);
-
-    return angle;
 }
 
 /**
