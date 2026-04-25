@@ -74,15 +74,25 @@ export function unitGetsNearThisUnit(
     };
 }
 
+export interface OnUnitAttackedConfiguration {
+    /** When true, prevents the same attacker from triggering the callback more than once per attack swing (cooldown based on attack speed). */
+    attackerCooldown?: boolean;
+    /** A 1–100 value representing the percentage chance the callback fires on any given attack. Omit to always fire. */
+    procChance?: number;
+}
 
 /**
- * Creates a trigger to monitor when a unit is attacked
+ * Registers a callback that fires whenever any unit is attacked.
  *
- * We could also have all functions execute in this single trigger's context instead of creating new triggers each time the function is used.
- * @param cb
- * @param config
+ * @param cb - Receives the attacking unit and the unit being attacked.
+ * @param config - Optional configuration to control proc chance and per-attacker cooldown gating.
+ *
+ * @remarks
+ * - If `procChance` is set, the callback only fires when `Math.ceil(Math.random() * 100) < procChance`.
+ * - If `attackerCooldown` is set, the callback is suppressed for subsequent attacks from the same
+ *   attacker until 1/3 of that attacker's attack cooldown has elapsed.
  */
-export function onUnitAttacked(cb: (attacker: Unit, victim: Unit) => void, config: { attackerCooldown?: boolean; procChance?: number }) {
+export function onUnitAttacked(cb: (attacker: Unit, victim: Unit) => void, config: OnUnitAttackedConfiguration = {}) {
     const attackerTriggerCooldown = new Set<Unit>();
     const t = Trigger.create();
 

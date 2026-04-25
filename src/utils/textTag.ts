@@ -76,8 +76,9 @@ export function createPermanentTextTagOnPoint(text: string, x: number, y: number
 /**
  * Probably doesn't belong
  * Creates a text tag on units when a spell is cast.
+ * @param prefixSymbol Symbol prepended to the spell name. Defaults to "¤  " (alt+0164). Another option: "•  " (alt+0149).
  */
-export function setup_createTextForSpellCast() {
+export function createTextForSpellCast(prefixSymbol: string = "¤  ") {
     const t = Trigger.create();
 
     t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
@@ -89,9 +90,7 @@ export function setup_createTextForSpellCast() {
             const spellNumber = GetSpellAbilityId();
             const spellName = GetAbilityName(spellNumber);
             if (!spellName || spellName === "Default String") return;
-            //alt + 0164 ¤
-            //alt + 0149 •
-            createFloatingTextTagOnUnit(u, ptColor(u.owner, "¤  ") + spellName);
+            createFloatingTextTagOnUnit(u, ptColor(u.owner, prefixSymbol) + spellName);
         }
     });
 }

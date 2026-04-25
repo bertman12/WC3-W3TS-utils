@@ -1,5 +1,5 @@
 import { Effect, Item, Trigger, Unit } from "w3ts";
-import { notifyPlayer, useTempEffect } from "./misc";
+import { useTempEffect } from "./misc";
 
 /**
  * Checks if the unit has an item in their item slots
@@ -36,28 +36,29 @@ function trig_itemRecipeSystem() {
         for (let x = 0; x < 6; x++) {
             const currItem = unit?.getItemInSlot(x);
             if (currItem?.name.toLowerCase().includes("recipe")) {
-                checkItemRecipeRequirements(unit, currItem);
+                tryFulfillRecipe(unit, currItem);
             }
         }
     });
 }
 
-function checkItemRecipeRequirements(unit: Unit, recipeItem: Item) {
+/**
+ *
+ * @param unit
+ * @param recipeItem
+ * @returns
+ */
+function tryFulfillRecipe(unit: Unit, recipeItem: Item) {
     if (recipeItem.name.toLowerCase().includes("recipe")) {
-        let requiredItems: RecipeItemRequirement[] | null = null;
-        let itemToCreateId: number | null = null;
+        const recipeData = itemRecipesMap.get(recipeItem.typeId);
 
-        for (const [key, value] of itemRecipesMap.entries()) {
-            if (key.recipeId === recipeItem.typeId) {
-                requiredItems = value;
-                itemToCreateId = key.itemId;
-            }
-        }
-
-        if (!requiredItems) {
+        if (!recipeData) {
             print("Missing required items data for the recipe ", recipeItem.name);
-            return;
+            return false;
         }
+
+        const requiredItems: RecipeItemRequirement[] = recipeData.requirements;
+        const itemToCreateId: number = recipeData.producedItemId;
 
         /**
          * unique list of item types and their quantity and charges that we found on the unit
@@ -95,12 +96,8 @@ function checkItemRecipeRequirements(unit: Unit, recipeItem: Item) {
                 return false;
             }) && matchingItems.length > 0;
 
-        if (!itemToCreateId) {
-            print("Missing the item type id of the item to create for this recipe: ", recipeItem.name);
-        }
-
         //destroys more items than it needds to
-        if (satisfiesRecipe && itemToCreateId) {
+        if (satisfiesRecipe) {
             //add the item
             requiredItems.forEach((req: RecipeItemRequirement) => {
                 for (let x = 0; x < req.quantity; x++) {
@@ -122,21 +119,20 @@ function checkItemRecipeRequirements(unit: Unit, recipeItem: Item) {
             const clap = Effect.create("Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl", unit.x, unit.y);
             clap?.setScaleMatrix(0.5, 0.5, 0.5);
             useTempEffect(clap);
+
+            return true;
         }
 
         if (!satisfiesRecipe) {
-            //refund the gold
-            notifyPlayer(`Missing recipe requirements for: ${recipeItem.name}.`);
+            return false;
         }
-
-        //use if or rf to store item gold cost in the world editor
     }
 }
 
 /***
  * Determines items that are created by recipes.
  */
-export function registerItemsRecipes(recipesConfiguration: Map<RecipeItem, RecipeItemRequirement[]>) {
+export function registerItemsRecipes(recipesConfiguration: Map<number, ItemRecipeData>) {
     itemRecipesMap = recipesConfiguration;
     trig_itemRecipeSystem();
 }
@@ -147,12 +143,13 @@ export interface RecipeItemRequirement {
     charges: number;
 }
 
-export interface RecipeItem {
-    recipeId: number;
-    itemId: number;
+export interface ItemRecipeData {
+    /** The item type ID of the item produced when the recipe is fulfilled. */
+    producedItemId: number;
+    requirements: RecipeItemRequirement[];
 }
 
-let itemRecipesMap = new Map<RecipeItem, RecipeItemRequirement[]>([
+let itemRecipesMap = new Map<number, ItemRecipeData>([
     // [
     //     { recipeId: ITEMS.recipe_blinkTreads, itemId: ITEMS.blinkTreads },
     //     [

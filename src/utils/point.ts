@@ -2,7 +2,7 @@ import { Point, Rectangle } from "w3ts";
 const MAP_EDGE_BUFFER_DIST = 300;
 
 export function createValidPoint(maxAttempts: number, validatorFn: (p: Point) => {}) {
-    const MAX_ATTEMPTS = 65000; // 100 was about 10 seconds; 1000 gets good coverage
+    const MAX_ATTEMPTS = 10000; // 100 was about 10 seconds; 1000 gets good coverage
     let currentAttempts = 0;
     const worldBounds = Rectangle.fromHandle(GetWorldBounds());
     if (!worldBounds) return;
@@ -63,25 +63,16 @@ export function getRandomCoordinatesOnCircle(relativeX: number, relativeY: numbe
 }
 
 /**
- * Returns degrees or radians?
+ * Returns the angle in degrees between two points using atan2.
  */
 export function getAngleBetweenPoints(x1: number, y1: number, x2: number, y2: number) {
-    const locA = Location(x1, y1);
-    const locB = Location(x2, y2);
-
-    const angle = AngleBetweenPoints(locA, locB);
-    //arc tan
-    RemoveLocation(locA);
-    RemoveLocation(locB);
-
-    return angle;
+    return Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
 }
 
 export function distanceBetweenPoints(x1: number, y1: number, x2: number, y2: number) {
     const deltaX = x1 - x2;
     const deltaY = y1 - y2;
     const squaredDist = deltaX * deltaX + deltaY * deltaY;
-    // const squaredDist = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
     const dist = Math.sqrt(squaredDist);
 
     return dist;

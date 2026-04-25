@@ -1,5 +1,6 @@
 import { Group, MapPlayer, Timer, Unit } from "w3ts";
 import { adjustGold, adjustLumber } from "./players";
+import { getAngleBetweenPoints } from "./point";
 
 export function createUnits(quantity: number, useFood: boolean, ...args: Parameters<typeof Unit.create>) {
     const units: Unit[] = [];
@@ -106,15 +107,8 @@ export function useDummyUnit(dummyUnitCode: number, cb: (dummy: Unit) => void, a
 }
 
 /**
- * Returns degrees or radians?
+ * Returns the angle in degrees from `unit` to `relativeUnit`.
  */
 export function getRelativeAngleToUnit(unit: Unit, relativeUnit: Unit) {
-    const locA = GetUnitLoc(unit.handle);
-    const locB = GetUnitLoc(relativeUnit.handle);
-    const angle = AngleBetweenPoints(locA, locB);
-
-    RemoveLocation(locA);
-    RemoveLocation(locB);
-
-    return angle;
+    return getAngleBetweenPoints(unit.x, unit.y, relativeUnit.x, relativeUnit.y);
 }

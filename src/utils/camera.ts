@@ -1,63 +1,48 @@
 import { Trigger } from "w3ts";
 import { forEachPlayer } from "./players";
 
-type CameraDistances = "mid" | "far" | "max";
+export interface CameraZoomConfiguration {
+    argument: string;
+    cameraDistance: number;
+}
 
-export function enableCameraZoom() {
-  const t = Trigger.create();
-  forEachPlayer((p) => {
-    SetCameraFieldForPlayer(p.handle, CAMERA_FIELD_FARZ, 10000, 0.25);
+export const DEFAULT_CAMERA_ZOOM_CONFIGURATION: CameraZoomConfiguration[] = [
+    { argument: "mid", cameraDistance: 4500 },
+    { argument: "far", cameraDistance: 6000 },
+    { argument: "max", cameraDistance: 7800 },
+];
 
-    t.registerPlayerChatEvent(p, "-cam", false);
+export function enableCameraZoom(cameraZoomConfiguration: CameraZoomConfiguration[] = DEFAULT_CAMERA_ZOOM_CONFIGURATION) {
+    const t = Trigger.create();
 
-    t.addAction(() => {
-      const str = GetEventPlayerChatString();
-      const triggeringPlayer = GetTriggerPlayer();
-      if (str && triggeringPlayer) {
-        const [command, distance] = str?.split(" ");
-        SetCameraFieldForPlayer(
-          triggeringPlayer,
-          CAMERA_FIELD_FARZ,
-          10000,
-          0.25
-        );
+    const zoomConfigurationByArgument = new Map<string, number>(cameraZoomConfiguration.map((configuration) => [configuration.argument, configuration.cameraDistance]));
 
-        if ((distance as CameraDistances) === "mid") {
-          SetCameraFieldForPlayer(
-            triggeringPlayer,
-            CAMERA_FIELD_TARGET_DISTANCE,
-            4500,
-            0.25
-          );
-          return;
-        } else if ((distance as CameraDistances) === "far") {
-          SetCameraFieldForPlayer(
-            triggeringPlayer,
-            CAMERA_FIELD_TARGET_DISTANCE,
-            6000,
-            0.25
-          );
-          return;
-        } else if ((distance as CameraDistances) === "max") {
-          SetCameraFieldForPlayer(
-            triggeringPlayer,
-            CAMERA_FIELD_TARGET_DISTANCE,
-            7800,
-            0.25
-          );
-          return;
-        }
+    forEachPlayer((p) => {
+        SetCameraFieldForPlayer(p.handle, CAMERA_FIELD_FARZ, 10000, 0.25);
 
-        const distanceAsNumber = Number(distance);
-        if (typeof distanceAsNumber !== "number") return;
+        t.registerPlayerChatEvent(p, "-cam", false);
 
-        SetCameraFieldForPlayer(
-          triggeringPlayer,
-          CAMERA_FIELD_TARGET_DISTANCE,
-          distanceAsNumber,
-          0.25
-        );
-      }
+        t.addAction(() => {
+            const str = GetEventPlayerChatString();
+            const triggeringPlayer = GetTriggerPlayer();
+            if (str && triggeringPlayer) {
+                const [, distance] = str.split(" ");
+
+                if (!distance) return;
+
+                SetCameraFieldForPlayer(triggeringPlayer, CAMERA_FIELD_FARZ, 10000, 0.25);
+
+                const configuredDistance = zoomConfigurationByArgument.get(distance);
+                if (configuredDistance !== undefined) {
+                    SetCameraFieldForPlayer(triggeringPlayer, CAMERA_FIELD_TARGET_DISTANCE, configuredDistance, 0.25);
+                    return;
+                }
+
+                const distanceAsNumber = Number(distance);
+                if (!Number.isFinite(distanceAsNumber)) return;
+
+                SetCameraFieldForPlayer(triggeringPlayer, CAMERA_FIELD_TARGET_DISTANCE, distanceAsNumber, 0.25);
+            }
+        });
     });
-  });
 }
