@@ -1,5 +1,3 @@
-// import { WTS_Units } from "src/enums/WTS_Enums";
-// import { PlayerIndex } from "src/player/player-data";
 import { Effect, Timer, Unit } from "w3ts";
 import { OrderId, Players } from "w3ts/globals";
 
@@ -51,9 +49,14 @@ export function applyForce(
   const timer = Timer.create();
   const refreshInterval = 0.01;
   const updatesPerSecond = 1 / refreshInterval;
-  const frictionConstant = 4800; //meters per second friction decay
+  const frictionConstant = config.frictionConstant ?? 4800; //meters per second friction decay
+  const frictionDecayPerTick = frictionConstant / updatesPerSecond;
+  const angleRad = Deg2Rad(angle);
+  const cosAngle = Math.cos(angleRad);
+  const sinAngle = Math.sin(angleRad);
   let currentSpeed = initialSpeed;
   let timeElapsed = 0;
+  let hasStarted = false;
 
   const clickMoveOrder = 851971;
   const moveOrders = [
@@ -64,7 +67,6 @@ export function applyForce(
     clickMoveOrder,
   ];
 
-  let forceDummyUnit: Unit | undefined = undefined;
   const defaultX = 11800;
   const defaultY = -5700;
 
@@ -75,7 +77,7 @@ export function applyForce(
    * Prematurely end the force effect
    */
   function destroyForceEffect(runOnEnd: boolean = false) {
-    if (runOnEnd && config?.onEnd) {
+    if (runOnEnd && config.onEnd) {
       config.onEnd();
     }
 
@@ -95,16 +97,14 @@ export function applyForce(
    */
   // const BREAK_DISTANCE = 100;
 
-  if (!forceDummyUnit) {
-    forceDummyUnit = Unit.create(
-      Players[config.dummyUnitPlayerIndex],
-      config.dummyUnitPlayerIndex,
-      defaultX,
-      defaultY
-    );
-  }
+  const forceDummyUnit = Unit.create(
+    Players[config.dummyUnitPlayerIndex],
+    config.dummyUnitPlayerIndex,
+    defaultX,
+    defaultY
+  );
 
-  if (config?.animationIndexNumber) {
+  if (config.animationIndexNumber) {
     ResetUnitAnimation(unit.handle);
     SetUnitAnimationByIndex(unit.handle, config.animationIndexNumber);
   }
@@ -127,11 +127,11 @@ export function applyForce(
     // }
 
     //if the unit's move speed vector is greater than the remaining applied force vector then we may stop the applied force function; should only run while the unit has the move order
-    // if (config?.obeyPathing && !config.strictPathing && currentSpeed > unit.moveSpeed) {
+    // if (config.obeyPathing && !config.strictPathing && currentSpeed > unit.moveSpeed) {
     //     unit.issueImmediateOrder(OrderId.Stop);
     // }
 
-    if (forceDummyUnit && config?.strictPathing) {
+    if (forceDummyUnit && config.strictPathing) {
       const isWindWalked = UnitHasBuffBJ(forceDummyUnit.handle, FourCC("BOwk"));
 
       if (!isWindWalked) {
@@ -162,10 +162,9 @@ export function applyForce(
       }
     }
 
-    const xVelocity =
-      (currentSpeed / updatesPerSecond) * Math.cos(Deg2Rad(angle));
-    const yVelocity =
-      (currentSpeed / updatesPerSecond) * Math.sin(Deg2Rad(angle));
+    const stepDistance = currentSpeed * refreshInterval;
+    const xVelocity = stepDistance * cosAngle;
+    const yVelocity = stepDistance * sinAngle;
 
     //Complete execution when current speed of the initial force has decayed
     if (currentSpeed <= 0) {
@@ -174,12 +173,15 @@ export function applyForce(
     }
 
     //Runs when the force is first applied
-    if (config?.onStart && currentSpeed === initialSpeed) {
-      config.onStart(currentSpeed, timeElapsed);
+    if (!hasStarted) {
+      hasStarted = true;
+      if (config.onStart) {
+        config.onStart(currentSpeed, timeElapsed);
+      }
     }
 
     //Runs at any point while the function is executing
-    if (config?.whileActive) {
+    if (config.whileActive) {
       config.whileActive(currentSpeed, timeElapsed);
     }
 
@@ -188,7 +190,7 @@ export function applyForce(
 
     //basically the same thing now since we are no longer issuing the stop command on the unit.
     //also the moment another force is applied to the unit the previous force will stop being applied.
-    if (config?.strictPathing) {
+    if (config.strictPathing) {
       unit.x = theoreticalX;
       unit.y = theoreticalY;
     } else {
@@ -199,13 +201,13 @@ export function applyForce(
     timeElapsed += refreshInterval;
 
     if (
-      config?.sustainedForceDuration &&
+      config.sustainedForceDuration &&
       timeElapsed <= config.sustainedForceDuration
     ) {
       return;
     }
 
-    currentSpeed -= frictionConstant / updatesPerSecond;
+    currentSpeed -= frictionDecayPerTick;
   });
 
   return { destroyForceEffect };
