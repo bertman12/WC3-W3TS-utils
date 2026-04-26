@@ -1,4 +1,8 @@
-export function PlaySoundLocal(soundPath: string, localPlayerCanHearSound: boolean) {
+export function PlaySoundLocal(soundPath: string, localPlayerCanHearSound?: boolean) {
+    if(localPlayerCanHearSound === undefined){
+        return;
+    }
+
     let volume = 0;
     const s = CreateSound(soundPath, FALSE, FALSE, FALSE, 10, 10, "DefaultEAXON");
 
